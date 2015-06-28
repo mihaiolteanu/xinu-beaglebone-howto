@@ -48,17 +48,23 @@ Press Shift+a (or A, for short) to change the *Serial Device* to /dev/ttyUSB0.
 Press F to disable the *Hardware Flow Control*. (it will automatically toggle to *No*).
 Press Esc to go to the previous menu and then *Save setup as dfl*. This will save the previous settings for the next time minicom is launched.
 
-Run minicm with noinit as admin:
+Lastly, the ymodem protocol used by minicom for file transfer uses /usr/bin/rb and /usr/bin/sb by default. If you don't have those installed, you'll get the `failure executing protocol` error when trying to upload the boot file. The easy fix is (thanks [Andrew](https://axixmiqui.wordpress.com/2008/05/16/minicom-ymodem-issue/)!):
+
+`$ sudo apt-get install lrzsz`
+
+Run minicom with noinit as admin:
 
 `$ sudo minicom -o`
 
 Next, follow steps 4-8 from the [instructions](http://www.xinu.cs.purdue.edu/files/Xinu_BBB_instructions.txt) mentioned above. If you somehow can't interrupt the boot process because you can't send any keys through minicom, check the "serial port setup" again.
 
+Sometimes you'll get a `timeout on pathname` error from minicom. Just try again.
+
 Do not follow step 9 yet. That is, do not issue the `bootm` command. If the watchdog is enabled on the BBB, after the Xinu boots, the watchdog timer will expire and the BBB will reset. Xinu does not have a "feed-the-dog" implementation as far as I can tell. The watchdog timeout is approximately 60 seconds.
 
 # Disable the BBB watchdog from uboot
 
-You can check if the watchdog is set by reading the **WDT_WSPR** register, while in uboot (see also the [Technical Reference Manual for AM335x](http://www.ti.com/general/docs/lit/getliterature.tsp?baseLiteratureNumber=spruh73&fileType=pdf).
+You can check if the watchdog is set by reading the **WDT_WSPR** register, while in uboot (see also the [Technical Reference Manual for AM335x](http://www.ti.com/general/docs/lit/getliterature.tsp?baseLiteratureNumber=spruh73&fileType=pdf)).
 The WDT_WSPR has and offset of 48h from the base register, WDT1, which has the address `0x44e35000`. So we need to check the 0x44e35048. 
 So, from uboot (don't use the exact address, only 10h increments, otherwise you might get a reset):
 
