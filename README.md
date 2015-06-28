@@ -65,8 +65,8 @@ Do not follow step 9 yet. That is, do not issue the `bootm` command. If the watc
 # Disable the BBB watchdog from uboot
 
 You can check if the watchdog is set by reading the **WDT_WSPR** register, while in uboot (see also the [Technical Reference Manual for AM335x](http://www.ti.com/general/docs/lit/getliterature.tsp?baseLiteratureNumber=spruh73&fileType=pdf)).
-The WDT_WSPR has and offset of 48h from the base register, WDT1, which has the address `0x44e35000`. So we need to check the 0x44e35048. 
-So, from uboot (don't use the exact address, only 10h increments, otherwise you might get a reset):
+The WDT_WSPR has an offset of 48h from the base register, WDT1, which has the address `0x44e35000`. So we need to check the 0x44e35048. 
+From uboot (don't use the exact address, only 10h increments, otherwise you might get a reset):
 
 `U-Boot# md 0x44e35030 8`
 
@@ -77,9 +77,7 @@ So, from uboot (don't use the exact address, only 10h increments, otherwise you 
 In this case, the value is 0x4444, which means the watchdog is enabled.
 To disable it,
 
-`U-Boot# mw 0x44e35048 0xaaaa`
-
-`U-Boot# mw 0x44e35048 0x5555`
+`U-Boot# mw 0x44e35048 0xaaaa; sleep 1; U-Boot# mw 0x44e35048 0x5555`
 
 There is only one trick though. The register WDT_WWPS.W_PEND_WSPR (offset 34h) must have a value different than zero when the second write (0x5555) is issued. Repeat the two mw steps above if the watchdog was not disabled.
 
