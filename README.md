@@ -77,7 +77,7 @@ From uboot (don't use the exact address, only 10h increments, otherwise you migh
 In this case, the value is 0x4444, which means the watchdog is enabled.
 To disable it,
 
-`U-Boot# mw 0x44e35048 0xaaaa; sleep 1; U-Boot# mw 0x44e35048 0x5555`
+`U-Boot# mw 0x44e35048 0xaaaa; sleep 1; mw 0x44e35048 0x5555`
 
 There is only one trick though. The register WDT_WWPS.W_PEND_WSPR (offset 34h) must have a value different than zero when the second write (0x5555) is issued. Repeat the two mw steps above if the watchdog was not disabled.
 
