@@ -70,9 +70,10 @@ From uboot (don't use the exact address, only 10h increments, otherwise you migh
 
 `U-Boot# md 0x44e35030 8`
 
->44e35030: 00001234 00000000 00000000 00000000    4...............
->
->44e35040: 00000000 00000000 00004444 00000000    ........DD......
+```
+44e35030: 00001234 00000000 00000000 00000000    4...............
+44e35040: 00000000 00000000 00004444 00000000    ........DD......
+```
 
 In this case, the value is 0x4444, which means the watchdog is enabled.
 To disable it,
@@ -85,9 +86,10 @@ Verify that the watchdog was disabled (i.e. the register was succesfully writen 
 
 `U-Boot# md 0x44e35030 8`
 
->44e35030: 00001234 00000000 00000000 00000000    4...............
->
->44e35040: 00000000 00000000 00005555 00000000    ........UUUU....
+```
+44e35030: 00001234 00000000 00000000 00000000    4...............
+44e35040: 00000000 00000000 00005555 00000000    ........UUUU....
+```
 
 Now run the last step,
 
